@@ -619,10 +619,24 @@ body {
 .post-content > table tr th,
 .post-content > table tr td {
   border: 1px solid #e7e8e9;
+  text-indent: 0em;
 }
 .post-content table {
   border-collapse: collapse;
+  margin-left: 2em;
+  width: 100%;
+  line-height: 32px;
 }
+.post-content th{
+  background: #F4F6F9;
+  color: #404040;
+  text-align: center;
+}
+
+.post-content td{
+  text-align: center;
+}
+
 .post-content blockquote {
   border-top: 1px solid #cccccc;
   border-bottom: 1px solid #cccccc;
@@ -677,34 +691,40 @@ body {
   line-height: 175%;
 }
 .post-content h1 {
-  color: #333333;
+  color: #1F2F3D;
   margin-top: 20px;
   margin-bottom: 20px;
+  font-weight: normal;
 }
 .post-content h2 {
-  color: #333333;
+  color: #1F2F3D;
   margin-top: 20px;
   margin-bottom: 20px;
+  font-weight: normal;
 }
 .post-content h3 {
-  color: #333333;
+  color: #1F2F3D;
   margin-top: 20px;
   margin-bottom: 20px;
+  font-weight: normal;
 }
 .post-content h4 {
-  color: #333333;
+  color: #1F2F3D;
   margin-top: 20px;
   margin-bottom: 20px;
+  font-weight: normal;
 }
 .post-content h5 {
-  color: #333333;
+  color: #1F2F3D;
   margin-top: 20px;
   margin-bottom: 20px;
+  font-weight: normal;
 }
 .post-content h6 {
-  color: #333333;
+  color: #1F2F3D;
   margin-top: 20px;
   margin-bottom: 20px;
+  font-weight: normal;
 }
 .post-content figcaption {
   text-align: center;
