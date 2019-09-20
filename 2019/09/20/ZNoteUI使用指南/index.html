@@ -11,7 +11,7 @@
 
     <title>
         
-        
+        ZNoteUI使用指南 - undefined
         
     </title>
 
@@ -59,7 +59,7 @@
                     <span>主页</span>
                 </a>
             </li>
-            <li  class=active >
+            <li >
                 <a href="/tags">
                     <i class="iconfont icon-biaoqian1"></i>
                     <span>标签</span>
@@ -80,6 +80,10 @@
             
         </ul>
     </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Icon-图标"><span class="toc-text">Icon 图标</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#使用方法"><span class="toc-text">使用方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Attribute"><span class="toc-text">Attribute</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#IconButton-图标按钮"><span class="toc-text">IconButton 图标按钮</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Attribute-1"><span class="toc-text">Attribute</span></a></li></ol></li></ol>
+</div>
     
 </div>
 
@@ -107,90 +111,105 @@
         
 
 
-<!-- 归档列表 -->
+<div class="post-container">
+    <div class="post-title">
+        ZNoteUI使用指南
+    </div>
 
-<div class="archives-container">
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2019-09-20 10:23:00</span></span>
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content ">
+        <style>
+table th:nth-of-type(1){
+width: 20%;
+}
+table th:nth-of-type(2){
+width: 20%;
+}
+table th:nth-of-type(3){
+width: 20%;
+}
+table th:nth-of-type(4){
+width: 20%;
+}
+table th:nth-of-type(5){
+width: 20%;
+}
+</style>
 
-<div class="one-tag-list">
-                <span class="fa fa-calendar-times-o listing-seperator" id="2019">
-                    <span class="tag-text">2019</span>
-                </span>
-    <ul>
-        
-        <!-- <li class="listing-item">
-        <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
-        <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
-        </li> -->
-        <li >
-            <span>09-20</span>
-            <i class="fa fa-angle-double-right" aria-hidden="true"></i>
-            <a href="/2019/09/20/ZNoteUI使用指南/">
-                        <span>
-                            ZNoteUI使用指南
-                        </span>
-            </a>
-            <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
-        </li>
-        
-        <!-- <li class="listing-item">
-        <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
-        <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
-        </li> -->
-        <li >
-            <span>09-19</span>
-            <i class="fa fa-angle-double-right" aria-hidden="true"></i>
-            <a href="/2019/09/19/文章标题/">
-                        <span>
-                            文章标题
-                        </span>
-            </a>
-            <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
-        </li>
-        
-        <!-- <li class="listing-item">
-        <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
-        <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
-        </li> -->
-        <li >
-            <span>09-19</span>
-            <i class="fa fa-angle-double-right" aria-hidden="true"></i>
-            <a href="/2019/09/19/hello-world/">
-                        <span>
-                            Hello World
-                        </span>
-            </a>
-            <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
-        </li>
-        
+<p>写给自己，以作记录</p>
+<h1 id="Icon-图标"><a href="#Icon-图标" class="headerlink" title="Icon 图标"></a>Icon 图标</h1><p>提供了一个可设置图标的控件</p>
+<p>&nbsp;</p>
+<h2 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h2><p>Icon控件提供了一个默认图标，通过设置<code>Data</code>属性可更改图标</p>
+<h2 id="Attribute"><a href="#Attribute" class="headerlink" title="Attribute"></a>Attribute</h2><table>
+<thead>
+<tr>
+<th>参数</th>
+<th>说明</th>
+<th>类型</th>
+<th>可选值</th>
+<th>默认值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Data</td>
+<td>图标</td>
+<td>Geometry</td>
+<td>—</td>
+<td>—</td>
+</tr>
+</tbody></table>
+<p>&nbsp;</p>
+<h1 id="IconButton-图标按钮"><a href="#IconButton-图标按钮" class="headerlink" title="IconButton 图标按钮"></a>IconButton 图标按钮</h1><p>提供了一个只有图标，没有内容的按钮控件</p>
+<h2 id="Attribute-1"><a href="#Attribute-1" class="headerlink" title="Attribute"></a>Attribute</h2><table>
+<thead>
+<tr>
+<th>参数</th>
+<th>说明</th>
+<th>类型</th>
+<th>可选值</th>
+<th>默认值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>PathData</td>
+<td>图标</td>
+<td>Geometry</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>PathWidth</td>
+<td>图标大小</td>
+<td>double</td>
+<td>—</td>
+<td>13</td>
+</tr>
+<tr>
+<td>CornerRadius</td>
+<td>按钮圆角</td>
+<td>CornerRadius</td>
+<td>—</td>
+<td>3</td>
+</tr>
+</tbody></table>
 
-    </ul>
-</div>
-
-<div class="one-tag-list">
-                <span class="fa fa-calendar-times-o listing-seperator" id="2018">
-                    <span class="tag-text">2018</span>
-                </span>
-    <ul>
         
-        <!-- <li class="listing-item">
-        <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
-        <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
-        </li> -->
-        <li >
-            <span>11-25</span>
-            <i class="fa fa-angle-double-right" aria-hidden="true"></i>
-            <a href="/2018/11/25/Node-js的TCP链接管理/">
-                        <span>
-                            Node.js 的 TCP 链接管理
-                        </span>
-            </a>
-            <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
-        </li>
-        
+        <br />
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
 
-    </ul>
-</div>
+        <div id="lv-container">
+        </div>
 
+    </div>
 </div>
 
     </div>
@@ -231,7 +250,7 @@
     // We expose some of the variables needed by the front end
     window.hexo_search_path = ""
     window.hexo_root = "/"
-    window.isPost = false
+    window.isPost = true
 </script>
 <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
 <script src="/js/index.js"></script>
