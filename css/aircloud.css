@@ -771,6 +771,7 @@ body {
 .index-container .index-middle {
   max-width: 784px;
   flex: 1;
+  margin-left: 2em;
 }
 @media screen and (max-width: 1180px) {
   .index-container {
