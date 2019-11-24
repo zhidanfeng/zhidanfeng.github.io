@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content>
+    <meta name="keyword" content>
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        SSM集成Spring Security - undefined
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i> 悟已往之不谏，知来者之可追 </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar radius">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>zhidanfeng</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#准备工作"><span class="toc-text">准备工作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#重写UsernamePasswordAuthenticationFilter"><span class="toc-text">重写UsernamePasswordAuthenticationFilter</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#自定义AuthenticationSuccessHandler"><span class="toc-text">自定义AuthenticationSuccessHandler</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#自定义AuthenticationFailureHandler"><span class="toc-text">自定义AuthenticationFailureHandler</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#spring-security配置说明"><span class="toc-text">spring-security配置说明</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#登录测试"><span class="toc-text">登录测试</span></a></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+
+        <div class="index-about-mobile">
+            <i> 悟已往之不谏，知来者之可追 </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        SSM集成Spring Security
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2019-10-01 20:48:06</span></span>
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content ">
+        <h2 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h2><ol>
+<li><p>首先需要在<code>pom.xml</code>中引入spring security相关的jar包</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.security<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-security-core<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">version</span>&gt;</span>5.1.6.RELEASE<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.security<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-security-web<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">version</span>&gt;</span>5.1.6.RELEASE<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.security<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-security-config<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">version</span>&gt;</span>5.1.6.RELEASE<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>新建spring-security.xml配置文件并引入</p>
+</li>
+</ol>
+<p>spring-security.xml内容</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">beans</span> <span class="attr">xmlns</span>=<span class="string">"http://www.springframework.org/schema/beans"</span></span></span><br><span class="line"><span class="tag">       <span class="attr">xmlns:security</span>=<span class="string">"http://www.springframework.org/schema/security"</span></span></span><br><span class="line"><span class="tag">       <span class="attr">xmlns:xsi</span>=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span></span></span><br><span class="line"><span class="tag">       <span class="attr">xsi:schemaLocation</span>=<span class="string">"http://www.springframework.org/schema/beans</span></span></span><br><span class="line"><span class="tag"><span class="string">    http://www.springframework.org/schema/beans/spring-beans.xsd</span></span></span><br><span class="line"><span class="tag"><span class="string">    http://www.springframework.org/schema/security</span></span></span><br><span class="line"><span class="tag"><span class="string">    http://www.springframework.org/schema/security/spring-security.xsd"</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- 配置不拦截的资源 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">security:http</span> <span class="attr">pattern</span>=<span class="string">"/login"</span> <span class="attr">security</span>=<span class="string">"none"</span> /&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!--</span></span><br><span class="line"><span class="comment">    	配置具体的规则</span></span><br><span class="line"><span class="comment">    	auto-config="true"	不用自己编写登录的页面，框架提供默认登录页面</span></span><br><span class="line"><span class="comment">    	use-expressions="false"	是否使用SPEL表达式</span></span><br><span class="line"><span class="comment">    --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">security:http</span> <span class="attr">auto-config</span>=<span class="string">"false"</span> <span class="attr">use-expressions</span>=<span class="string">"true"</span> <span class="attr">entry-point-ref</span>=<span class="string">"http403EntryPoint"</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 配置具体的拦截的规则 pattern="请求路径的规则" access="访问系统的人，必须有ROLE_USER的角色" --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">security:intercept-url</span> <span class="attr">pattern</span>=<span class="string">"/**"</span> <span class="attr">access</span>=<span class="string">"hasRole('ROLE_USER')"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">security:intercept-url</span> <span class="attr">pattern</span>=<span class="string">"/category/**"</span> <span class="attr">access</span>=<span class="string">"hasRole('ROLE_USER')"</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">security:intercept-url</span> <span class="attr">pattern</span>=<span class="string">"/tag/**"</span> <span class="attr">access</span>=<span class="string">"hasRole('ROLE_USER')"</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">security:custom-filter</span> <span class="attr">ref</span>=<span class="string">"CustomAuthenticationFilter"</span> <span class="attr">position</span>=<span class="string">"FORM_LOGIN_FILTER"</span>/&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 定义跳转的具体的页面 --&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--&lt;security:form-login--&gt;</span></span><br><span class="line">                <span class="comment">&lt;!--login-page="/login"--&gt;</span></span><br><span class="line">                <span class="comment">&lt;!--login-processing-url="/doLogin"--&gt;</span></span><br><span class="line">                <span class="comment">&lt;!--default-target-url="/index.jsp"--&gt;</span></span><br><span class="line">                <span class="comment">&lt;!--authentication-failure-url="/failer.jsp"--&gt;</span></span><br><span class="line">                <span class="comment">&lt;!--username-parameter="username"--&gt;</span></span><br><span class="line">                <span class="comment">&lt;!--password-parameter="password"--&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--/&gt;--&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">&lt;!-- 关闭跨域请求 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">security:csrf</span> <span class="attr">disabled</span>=<span class="string">"true"</span>/&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">&lt;!-- 退出 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">security:logout</span> <span class="attr">invalidate-session</span>=<span class="string">"true"</span> <span class="attr">logout-url</span>=<span class="string">"/logout.do"</span> <span class="attr">logout-success-url</span>=<span class="string">"/login.jsp"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">security:http</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"CustomAuthenticationFilter"</span> <span class="attr">class</span>=<span class="string">"com.zhidanfeng.znote.security.filter.CustomAuthenticationFilter"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"authenticationManager"</span> <span class="attr">ref</span>=<span class="string">"authenticationManager"</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"authenticationSuccessHandler"</span> <span class="attr">ref</span>=<span class="string">"customSuccessHandler"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"authenticationFailureHandler"</span> <span class="attr">ref</span>=<span class="string">"failureHandler"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"filterProcessesUrl"</span> <span class="attr">value</span>=<span class="string">"/doLogin"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"usernameParameter"</span> <span class="attr">value</span>=<span class="string">"username"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"passwordParameter"</span> <span class="attr">value</span>=<span class="string">"password"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"customSuccessHandler"</span> <span class="attr">class</span>=<span class="string">"com.zhidanfeng.znote.security.handler.SuccessHandler"</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--&lt;property name="defaultTargetUrl" value="/login" /&gt;--&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"failureHandler"</span> <span class="attr">class</span>=<span class="string">"com.zhidanfeng.znote.security.handler.FailureHandler"</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"http403EntryPoint"</span> <span class="attr">class</span>=<span class="string">"org.springframework.security.web.authentication.Http403ForbiddenEntryPoint"</span> /&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 切换成数据库中的用户名和密码 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">security:authentication-manager</span> <span class="attr">id</span>=<span class="string">"authenticationManager"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">security:authentication-provider</span> <span class="attr">user-service-ref</span>=<span class="string">"userService"</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!-- 配置加密的方式 --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">security:password-encoder</span> <span class="attr">ref</span>=<span class="string">"passwordEncoder"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">security:authentication-provider</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--&lt;security:authentication-provider&gt;--&gt;</span></span><br><span class="line">            <span class="comment">&lt;!--&lt;security:user-service&gt;--&gt;</span></span><br><span class="line">                <span class="comment">&lt;!--&lt;security:user name="admin" password="123456" authorities="ROLE_USER"/&gt;--&gt;</span></span><br><span class="line">            <span class="comment">&lt;!--&lt;/security:user-service&gt;--&gt;</span></span><br><span class="line">            <span class="comment">&lt;!--&lt;security:password-encoder ref="passwordEncoder"/&gt;--&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--&lt;/security:authentication-provider&gt;--&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">security:authentication-manager</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- 配置加密类 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"passwordEncoder"</span> <span class="attr">class</span>=<span class="string">"org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">beans</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>在<code>web.xml</code>中引入spring-secutiry.xml配置，使其生效</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">context-param</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param-name</span>&gt;</span>contextConfigLocation<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param-value</span>&gt;</span>classpath:spring/applicationContext.xml,classpath:spring/spring-security.xml<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">context-param</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>之外还需要在web.xml中添加spring security的过滤链配置</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">filter</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">filter-name</span>&gt;</span>springSecurityFilterChain<span class="tag">&lt;/<span class="name">filter-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">filter-class</span>&gt;</span>org.springframework.web.filter.DelegatingFilterProxy<span class="tag">&lt;/<span class="name">filter-class</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">filter</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">filter-mapping</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">filter-name</span>&gt;</span>springSecurityFilterChain<span class="tag">&lt;/<span class="name">filter-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">url-pattern</span>&gt;</span>/*<span class="tag">&lt;/<span class="name">url-pattern</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">filter-mapping</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>spring security是基于javax.servlet.Filter的，因此才能在spring mvc之前拦截，起到验证作用</p>
+<ul>
+<li>UsernamePasswordAuthenticationFilter: 实现Filter接口，负责拦截登录处理的url，帐号和密码会在这里获取，然后封装成<code>Authentication</code>交给<code>AuthenticationManager</code>进行认证工作</li>
+<li>Authentication: 贯穿整个认证过程，封装了认证的用户名，密码和权限角色等信息，接口有一个<code>boolean isAuthenticated()</code>方法来决定该<code>Authentication</code>认证成功没;</li>
+<li>AuthenticationManager: 认证管理器，但本身并不做认证工作，只是做个管理者的角色。例如默认实现ProviderManager会持有一个<code>AuthenticationProvider</code>数组，把认证工作交给这些<code>AuthenticationProvider</code>，直到有一个<code>AuthenticationProvider</code>完成了认证工作。</li>
+<li>AuthenticationProvider: 认证提供者，默认实现，也是最常使用的是<code>DaoAuthenticationProvider</code>。我们在配置时一般重写一个<code>UserDetailsService</code>来从数据库获取正确的用户名密码，其实就是配置了<code>DaoAuthenticationProvider</code>的<code>UserDetailsService</code>属性，<code>DaoAuthenticationProvider</code>会做帐号和密码的比对，如果正常就返回给<code>AuthenticationManager</code>一个验证成功的<code>Authentication</code></li>
+</ul>
+<h2 id="重写UsernamePasswordAuthenticationFilter"><a href="#重写UsernamePasswordAuthenticationFilter" class="headerlink" title="重写UsernamePasswordAuthenticationFilter"></a>重写UsernamePasswordAuthenticationFilter</h2><p>由于UsernamePasswordAuthenticationFilter默认获取UserName和Password是获取表单的参数的，但是实际项目上很多是使用的restful格式的接口发送json参数来登录的，因此使用默认的filter肯定是获取不到用户名和密码的，这里就需要我们重写<code>UsernamePasswordAuthenticationFilter</code></p>
+<p>新建一个<code>CustomAuthenticationFilter</code>文件</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.zhidanfeng.znote.security.filter;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.fasterxml.jackson.databind.ObjectMapper;</span><br><span class="line"><span class="keyword">import</span> com.zhidanfeng.znote.security.bean.AuthenticationBean;</span><br><span class="line"><span class="keyword">import</span> org.springframework.security.core.Authentication;</span><br><span class="line"><span class="keyword">import</span> org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> javax.servlet.http.HttpServletRequest;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.http.HttpServletResponse;</span><br><span class="line"><span class="keyword">import</span> java.io.BufferedReader;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CustomAuthenticationFilter</span> <span class="keyword">extends</span> <span class="title">UsernamePasswordAuthenticationFilter</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String jsonUsername;</span><br><span class="line">    <span class="keyword">private</span> String jsonPassword;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> String <span class="title">obtainPassword</span><span class="params">(HttpServletRequest request)</span> </span>&#123;</span><br><span class="line">        String password = <span class="keyword">null</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (<span class="string">"application/json"</span>.equals(request.getHeader(<span class="string">"Content-Type"</span>))) &#123;</span><br><span class="line">            password = <span class="keyword">this</span>.jsonPassword;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            password = <span class="keyword">super</span>.obtainPassword(request);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> password;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> String <span class="title">obtainUsername</span><span class="params">(HttpServletRequest request)</span></span>&#123;</span><br><span class="line">        String username = <span class="keyword">null</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (<span class="string">"application/json"</span>.equals(request.getHeader(<span class="string">"Content-Type"</span>))) &#123;</span><br><span class="line">            username = <span class="keyword">this</span>.jsonUsername;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            username = <span class="keyword">super</span>.obtainUsername(request);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> username;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Authentication <span class="title">attemptAuthentication</span><span class="params">(HttpServletRequest request, HttpServletResponse response)</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="string">"application/json"</span>.equals(request.getHeader(<span class="string">"Content-Type"</span>))) &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                <span class="comment">/*</span></span><br><span class="line"><span class="comment">                 * HttpServletRequest can be read only once</span></span><br><span class="line"><span class="comment">                 */</span></span><br><span class="line">                StringBuffer sb = <span class="keyword">new</span> StringBuffer();</span><br><span class="line">                String line = <span class="keyword">null</span>;</span><br><span class="line"></span><br><span class="line">                BufferedReader reader = request.getReader();</span><br><span class="line">                <span class="keyword">while</span> ((line = reader.readLine()) != <span class="keyword">null</span>)&#123;</span><br><span class="line">                    sb.append(line);</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                <span class="comment">//json transformation</span></span><br><span class="line">                ObjectMapper mapper = <span class="keyword">new</span> ObjectMapper();</span><br><span class="line">                AuthenticationBean loginRequest = mapper.readValue(sb.toString(), AuthenticationBean.class);</span><br><span class="line"></span><br><span class="line">                <span class="keyword">this</span>.jsonUsername = loginRequest.getUsername();</span><br><span class="line">                <span class="keyword">this</span>.jsonPassword = loginRequest.getPassword();</span><br><span class="line">            &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">super</span>.attemptAuthentication(request, response);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>重写filter获取到json中的用户名和密码后，就需要对该用户名和密码进行校验了，校验成功后需要返回该账号的一些信息，比如权限数据。spring security提供了一个<code>UserDetailsService</code>接口用于加载用户信息，我们可以自定义类实现该接口，做一些自定义的操作，比如根据用户名去数据库中获取该用户的权限数据。<br>新建一个<code>UserServiceImpl</code>类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.zhidanfeng.znote.service.impl;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.zhidanfeng.znote.security.bean.AuthenticationBean;</span><br><span class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Autowired;</span><br><span class="line"><span class="keyword">import</span> org.springframework.security.core.GrantedAuthority;</span><br><span class="line"><span class="keyword">import</span> org.springframework.security.core.authority.SimpleGrantedAuthority;</span><br><span class="line"><span class="keyword">import</span> org.springframework.security.core.userdetails.User;</span><br><span class="line"><span class="keyword">import</span> org.springframework.security.core.userdetails.UserDetails;</span><br><span class="line"><span class="keyword">import</span> org.springframework.security.core.userdetails.UserDetailsService;</span><br><span class="line"><span class="keyword">import</span> org.springframework.security.core.userdetails.UsernameNotFoundException;</span><br><span class="line"><span class="keyword">import</span> org.springframework.security.crypto.password.PasswordEncoder;</span><br><span class="line"><span class="keyword">import</span> org.springframework.stereotype.Service;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.ArrayList;</span><br><span class="line"><span class="keyword">import</span> java.util.Collection;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Service</span>(<span class="string">"userService"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserServiceImpl</span> <span class="keyword">implements</span> <span class="title">UserDetailsService</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> PasswordEncoder passwordEncoder;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> UserDetails <span class="title">loadUserByUsername</span><span class="params">(String username)</span> <span class="keyword">throws</span> UsernameNotFoundException </span>&#123;</span><br><span class="line">        UserDetails userDetails = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            AuthenticationBean bean = <span class="keyword">new</span> AuthenticationBean();</span><br><span class="line">            bean.setUsername(<span class="string">"admin"</span>);</span><br><span class="line">            <span class="comment">//密码需经过加密，否则会一直返回fail</span></span><br><span class="line">            bean.setPassword(passwordEncoder.encode(<span class="string">"123456"</span>));</span><br><span class="line">            Collection&lt;GrantedAuthority&gt; authList = getAuthorities();</span><br><span class="line">            userDetails = <span class="keyword">new</span> User(username, bean.getPassword(),<span class="keyword">true</span>,<span class="keyword">true</span>,<span class="keyword">true</span>,<span class="keyword">true</span>,authList);</span><br><span class="line">        &#125;<span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> userDetails;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> Collection&lt;GrantedAuthority&gt; <span class="title">getAuthorities</span><span class="params">()</span></span>&#123;</span><br><span class="line">        List&lt;GrantedAuthority&gt; authList = <span class="keyword">new</span> ArrayList&lt;GrantedAuthority&gt;();</span><br><span class="line">        authList.add(<span class="keyword">new</span> SimpleGrantedAuthority(<span class="string">"ROLE_USER"</span>));</span><br><span class="line">        authList.add(<span class="keyword">new</span> SimpleGrantedAuthority(<span class="string">"ROLE_ADMIN"</span>));</span><br><span class="line">        <span class="keyword">return</span> authList;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里面做了简单处理，直接使用了admin、123456进行了用户验证并返回了2个权限，可以根据实际需要在该类中去注入dao，用于访问数据库获取数据。<br>其中有2个地方需要注意</p>
+<ul>
+<li>该类使用<code>@Service(&quot;userService&quot;)</code>注解，其中userService名称与spring-security.xml配置中的<code>&lt;security:authentication-provider user-service-ref=&quot;userService&quot;&gt;</code>保持一致</li>
+<li>用户登录的密码肯定不是明文的，例子中采用了BCryptPasswordEncoder进行加密处理，因此在UserServiceImpl中需要经过加密处理再填充到UserDetails中，否则密码匹配不上，登录验证失败</li>
+</ul>
+<p>Spring Security的AuthenticationManager用来处理验证的请求，处理的结果分两种：</p>
+<ul>
+<li>验证成功：结果由AuthenticationSuccessHandler处理</li>
+<li>验证失败：结果由交给AuthenticationFailureHandler处理</li>
+</ul>
+<h3 id="自定义AuthenticationSuccessHandler"><a href="#自定义AuthenticationSuccessHandler" class="headerlink" title="自定义AuthenticationSuccessHandler"></a>自定义AuthenticationSuccessHandler</h3><p>用户在UserServiceImpl中验证成功后将调用SuccessHandler中的<code>onAuthenticationSuccess</code>方法，并返回json数据给登录调用者</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SuccessHandler</span> <span class="keyword">extends</span> <span class="title">SimpleUrlAuthenticationSuccessHandler</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> ObjectMapper objectMapper;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onAuthenticationSuccess</span><span class="params">(HttpServletRequest request, HttpServletResponse response, Authentication authentication)</span> <span class="keyword">throws</span> IOException, ServletException </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"login success"</span>);</span><br><span class="line">        </span><br><span class="line">        response.setContentType(<span class="string">"application/json;charset=UTF-8"</span>);</span><br><span class="line"></span><br><span class="line">        response.getWriter().write(objectMapper.writeValueAsString(Result.success(authentication.getPrincipal())));</span><br><span class="line"></span><br><span class="line">        <span class="comment">//request.getRequestDispatcher("/login").forward(request, response);</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="自定义AuthenticationFailureHandler"><a href="#自定义AuthenticationFailureHandler" class="headerlink" title="自定义AuthenticationFailureHandler"></a>自定义AuthenticationFailureHandler</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FailureHandler</span> <span class="keyword">implements</span> <span class="title">AuthenticationFailureHandler</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> ObjectMapper objectMapper;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onAuthenticationFailure</span><span class="params">(HttpServletRequest httpServletRequest, HttpServletResponse response, AuthenticationException e)</span> <span class="keyword">throws</span> IOException, ServletException </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"login failure"</span>);</span><br><span class="line"></span><br><span class="line">        response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value()); <span class="comment">// 服务器内部异常500</span></span><br><span class="line">        response.setContentType(<span class="string">"application/json;charset=UTF-8"</span>);</span><br><span class="line">        <span class="comment">// 返回异常信息</span></span><br><span class="line">        response.getWriter().write(objectMapper.writeValueAsString(Result.failure(ResultCode.USER_LOGIN_ERROR, e.getMessage())));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="spring-security配置说明"><a href="#spring-security配置说明" class="headerlink" title="spring-security配置说明"></a>spring-security配置说明</h2><h2 id="登录测试"><a href="#登录测试" class="headerlink" title="登录测试"></a>登录测试</h2>
+        
+        <br />
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+        <li>
+            <a target="_blank"  href="https://github.com/zhidanfeng">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a></p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = ""
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+</html>
